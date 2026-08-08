@@ -16,11 +16,18 @@ $accesoDatosUsuario = new AccesoDatosUsuario($conexion);
 $login = new Login($accesoDatosUsuario);
 
 $usuario = $login->autenticar($cedulaIngresada, $claveIngresada);
-
 $conectorPDO->desconectar();
 
 if ($usuario === null) {
-    header("Location: login.php?error=1");
+    $motivo = $login->getUltimoError();
+
+    if ($motivo === "inactivo") {
+        header("Location: login.php?error=2");
+    } elseif ($motivo === "sinRoles") {
+        header("Location: login.php?error=3");
+    } else {
+        header("Location: login.php?error=1"); // credenciales incorrectas
+    }
     exit;
 }
 

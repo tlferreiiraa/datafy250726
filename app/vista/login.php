@@ -1,3 +1,19 @@
+<?php
+$mensajeError = "";
+
+if (isset($_GET["error"])) {
+    $codigoError = $_GET["error"];
+
+    if ($codigoError === "1") {
+        $mensajeError = "Cédula o contraseña incorrectas.";
+    } elseif ($codigoError === "2") {
+        $mensajeError = "El usuario está inactivo.";
+    } elseif ($codigoError === "3") {
+        $mensajeError = "El usuario no tiene roles habilitados.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -30,7 +46,9 @@
             <form action="procesarLogin.php" method="post">
                 <fieldset>
                     <legend> INICIAR SESION </legend>
-
+                    <?php if ($mensajeError !== "") { ?>
+                        <p style="color: red;"><?php echo $mensajeError; ?></p>
+                    <?php } ?>
                     <div>
                         <label class="LabelIconoUser"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                 fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
