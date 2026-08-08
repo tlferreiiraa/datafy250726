@@ -1,33 +1,49 @@
 <?php
-require_once __DIR__ . "/../modelo/Usuarios.php";
+
+session_start();
+
+require_once __DIR__ . "/../modelo/ConectorPDO.php";
+require_once __DIR__ . "/../modelo/AccesoDatosUsuario.php";
+require_once __DIR__ . "/../modelo/Login.php";
 
 $cedulaIngresada = $_POST["cedula"];
 $claveIngresada = $_POST["password"];
 
-$usuarios = obtenerUsuarios();
+$conectorPDO = new ConectorPDO("localhost", "root", "", "sgrsi");
+$conexion = $conectorPDO->establecerConexion();
 
-$rolEncontrado = null;
+$accesoDatosUsuario = new AccesoDatosUsuario($conexion);
+$login = new Login($accesoDatosUsuario);
 
-if ($cedulaIngresada === $usuarios[0]["cedula"] && $claveIngresada === $usuarios[0]["clave"]) {
-    $rolEncontrado = $usuarios[0]["rol"];
-} elseif ($cedulaIngresada === $usuarios[1]["cedula"] && $claveIngresada === $usuarios[1]["clave"]) {
-    $rolEncontrado = $usuarios[1]["rol"];
-} elseif ($cedulaIngresada === $usuarios[2]["cedula"] && $claveIngresada === $usuarios[2]["clave"]) {
-    $rolEncontrado = $usuarios[2]["rol"];
-} elseif ($cedulaIngresada === $usuarios[3]["cedula"] && $claveIngresada === $usuarios[3]["clave"]) {
-    $rolEncontrado = $usuarios[3]["rol"];
+$usuario = $login->autenticar($cedulaIngresada, $claveIngresada);
+
+$conectorPDO->desconectar();
+
+if ($usuario === null) {
+    header("Location: login.php?error=1");
+    exit;
 }
 
-if ($rolEncontrado === "docente") {
-    header("Location: docente.html");
-} elseif ($rolEncontrado === "administrativo") {
-    header("Location: administrador.html");
-} elseif ($rolEncontrado === "tecnico") {
+$_SESSION["cedula"] = $usuario->getCedula();
+$_SESSION["administrativo"] = $usuario->esAdministrativo();
+$_SESSION["tecnico"] = $usuario->esTecnico();
+$_SESSION["docente"] = $usuario->esDocente();
+$_SESSION["direccion"] = $usuario->esDireccion();
+$_SESSION["estudiante"] = $usuario->esEstudiante();
+
+if ($usuario->esAdministrativo()) {
+    header("Location: administrativo.html");
+} elseif ($usuario->esTecnico()) {
     header("Location: tecnico.html");
-} elseif ($rolEncontrado === "direccion") {
+} elseif ($usuario->esDocente()) {
+    header("Location: docente.html");
+} elseif ($usuario->esDireccion()) {
     header("Location: direccion.html");
+} elseif ($usuario->esEstudiante()) {
+    header("Location: estudiante.html");
 } else {
     header("Location: login.php?error=1");
 }
 exit;
+
 ?>
