@@ -39,15 +39,15 @@ $_SESSION["direccion"] = $usuario->esDireccion();
 $_SESSION["estudiante"] = $usuario->esEstudiante();
 
 if ($usuario->esAdministrativo()) {
-    header("Location: administrativo.html");
+    header("Location: administrador.php");
 } elseif ($usuario->esTecnico()) {
-    header("Location: tecnico.html");
+    header("Location: tecnico.php");
 } elseif ($usuario->esDocente()) {
-    header("Location: docente.html");
+    header("Location: docente.php");
 } elseif ($usuario->esDireccion()) {
-    header("Location: direccion.html");
+    header("Location: direccion.php");
 } elseif ($usuario->esEstudiante()) {
-    header("Location: estudiante.html");
+    header("Location: estudiante.php");
 } else {
     header("Location: login.php?error=1");
 }

@@ -1,3 +1,19 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION["cedula"])) {
+    header("Location: login.php?error=4");
+    exit;
+}
+
+if (!$_SESSION["direccion"]) {
+    header("Location: login.php?error=5");
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -17,7 +33,7 @@
     <header class="HeaderChico">
         <img src="assets/img/iti utu.png" alt="">
         <h1> S.G.R.S.I </h1>
-        <a href="login.html">CERRAR SESION</a>
+        <a href="cerrarSesion.php">CERRAR SESION</a>
     </header>
     <main>
         <section class="SectionBotones">

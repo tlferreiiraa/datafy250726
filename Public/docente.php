@@ -1,3 +1,19 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION["cedula"])) {
+    header("Location: login.php?error=4");
+    exit;
+}
+
+if (!$_SESSION["docente"]) {
+    header("Location: login.php?error=5");
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/general.css">
-    <link rel="stylesheet" href="assets/css/administrador.css">
+    <link rel="stylesheet" href="assets/css/docente.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 </head>
 
@@ -17,13 +33,17 @@
     <header class="HeaderInicio">
         <img src="assets/img/iti utu.png" alt="">
         <h1> S.G.R.S.I </h1>
-        <a href="login.html">CERRAR SESION</a>
+        <a href="cerrarSesion.php">CERRAR SESION</a>
     </header>
     <main>
         <section class="SectionBotones">
-            <a class="AOpcion" href="agregaruser.html"><button class="ButtonRegistrarUsuario">REGISTRAR NUEVO
-                    USUARIO</button></a>
+            <a class="AOpcion" href="solicitar.html"><button class="ButtonSolicitar">ENVIAR SOLICITUD</button></a>
+            <a class="AOpcion" href="creartickets.html"><button class="ButtonRegistrarEquipo">REGISTRAR
+                    EQUIPO</button></a>
+            <a class="AOpcion" href="registrodiario.html"><button class="ButtonRegistroDiario">REGISTRO
+                    DIARIO</button></a>
         </section>
+
     </main>
     <a href="#inicio" class="ASubir">
         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-up-circle"
@@ -36,7 +56,6 @@
     <footer>
         <p>&copy; 2026 SGRSI. Todos los derechos reservados.</p>
     </footer>
-
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 

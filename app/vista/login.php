@@ -10,6 +10,10 @@ if (isset($_GET["error"])) {
         $mensajeError = "El usuario está inactivo.";
     } elseif ($codigoError === "3") {
         $mensajeError = "El usuario no tiene roles habilitados.";
+    } elseif ($codigoError === "4") {
+        $mensajeError = "Debe iniciar sesión para acceder.";
+    } elseif ($codigoError === "5") {
+        $mensajeError = "No tiene permisos para acceder a ese panel.";
     }
 }
 ?>
